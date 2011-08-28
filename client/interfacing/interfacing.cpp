@@ -40,7 +40,7 @@ Interfacing::Interfacing(ClientGame& ga, Player *p)
   : window(sf::VideoMode(1024, 600), "awesome title of doom", sf::Style::Close),
     game(ga), gg(false) {
       bgimage.LoadFromFile("bg.png");
-      bg.SetImage(bgimage);
+      bg.SetTexture(bgimage);
       me = p;
       window.SetFramerateLimit(60);
 }
@@ -131,7 +131,6 @@ void Interfacing::draw_string(const std::string &val, int x, int y, int offset){
 
 // THE main loop xD (also most of the glue)
 void Interfacing::main(){
-  const sf::Input &input = window.GetInput();
   sf::Event event;
   int mx=-1, my=-1, lx=-1, ly=-1; // mouse x and y this frame (only used if clicked), last x and y when mouse was clicked
 
@@ -143,21 +142,21 @@ void Interfacing::main(){
       if(event.Type == sf::Event::Closed){
         die();
         window.Close();
-      }else if((event.Type == sf::Event::KeyPressed) && (event.Key.Code == sf::Key::Escape)){
+      }else if((event.Type == sf::Event::KeyPressed) && (event.Key.Code == sf::Keyboard::Escape)){
         die();
         window.Close();
       }
 
     // if we are here, we are alive!
-    mx = input.GetMouseX();
-    my = input.GetMouseY();
+    mx = sf::Mouse::GetPosition().x;
+    my = sf::Mouse::GetPosition().y;
     // a left click either means:
     //    if there was a click last frame:
     //      make an event happen
     //    otherwise:
     //      record a click
     // a right click means: delete the click if it was recorded last frame
-    if(input.IsMouseButtonDown(sf::Mouse::Left)){
+    if(sf::Mouse::IsButtonPressed(sf::Mouse::Left)){
       // a left click could be an action
       if( ly > 0){ // omg, DO SOMETHING
         Planet *p = game.find_nearest_planet(lx, ly, 1);
@@ -217,7 +216,7 @@ void Interfacing::main(){
             window.Display();
         }
       }
-    } else if(input.IsMouseButtonDown(sf::Mouse::Right)){
+    } else if(sf::Mouse::IsButtonPressed(sf::Mouse::Right)){
       // a right click "empties" the stack"
       lx=-1;
       ly=-1;

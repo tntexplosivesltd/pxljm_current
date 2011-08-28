@@ -11,7 +11,7 @@ class Interfacing{
     sf::Clock clock; // for game time
     sf::Color colour_from_uid(int uid);
     sf::Sprite bg;
-    sf::Image bgimage;
+    sf::Texture bgimage;
     void draw_string(const std::string &val, int x, int y, int offset=0);
     bool gg;
   public:
